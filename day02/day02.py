@@ -49,3 +49,34 @@ with open("input.txt") as f_handle:
 	# integer_list = [1, 1, 1, 4, 99, 5, 6, 0, 99]	#-> 30, 1, 1, 4, 2, 5, 6, 0, 99
 	print(extract_intcode_program(integer_list)[0])
 
+# Part 2
+# Answer: 7733
+target_output = 19690720
+noun = range(0, 100)
+verb = range(0, 100)
+input_noun = None
+input_verb = None
+integer_list = []
+
+with open("input.txt") as f_handle:
+	f_content = f_handle.read()
+	integer_list = [int(num) for num in f_content.strip().split(",")]
+
+final_output = 0
+# Brute force for the win! But at least we can bail out of the nested loop as soon as we get the correct output.
+for n in noun:
+	for v in verb:
+		# Resetting the 'memory' of the program.
+		integer_list_copy = integer_list[:]
+		integer_list_copy[1] = n
+		integer_list_copy[2] = v
+		final_output = extract_intcode_program(integer_list_copy)[0]
+		if final_output == target_output:
+			input_noun = n
+			input_verb = v
+			break
+	else:
+		continue	# Only execute if the inner loop did NOT break.
+	break	# Only execute if the inner loop DID break.
+
+print(100 * input_noun + input_verb)
