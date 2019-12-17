@@ -47,13 +47,16 @@ with open("input.txt") as f_handle:
 	# :TEST DATA:
 	# wire_01_path = ["R8", "U5", "L5", "D3"]
 	# wire_02_path = ["U7", "R6", "D4", "L4"]
-	# Using this setup the answer should be 6.
+	# Using this setup the answer should be 6 for part 1.
+	# Using this setup the answer should be 30 for part 2.
 	# wire_01_path = ["R75", "D30", "R83", "U83", "L12", "D49", "R71", "U7", "L72"]
 	# wire_02_path = ["U62", "R66", "U55", "R34", "D71", "R55", "D58", "R83"]
-	# Using this setup the answer should be 159.
+	# Using this setup the answer should be 159 for part 1.
+	# Using this setup the answer should be 610 for part 2.
 	# wire_01_path = ["R98", "U47", "R26", "D63", "R33", "U87", "L62", "D20", "R33", "U53", "R51"]
 	# wire_02_path = ["U98", "R91", "D20", "R16", "D67", "R40", "U7", "R15", "U6", "R7"]
-	# Using this setup the answer should be 135.
+	# Using this setup the answer should be 135 for part 1.
+	# Using this setup the answer should be 410 for part 2.
 
 	wire_01_path_positions = calculate_wire_path_positions(wire_01_path_positions, wire_01_path)
 	wire_02_path_positions = calculate_wire_path_positions(wire_02_path_positions, wire_02_path)
@@ -64,3 +67,15 @@ with open("input.txt") as f_handle:
 	wire_interect_points = tuple(wire_interect_point for wire_interect_point in (wire_01_path_positions_no_dupes).intersection(wire_02_path_positions_no_dupes))
 	manhattan_distances = tuple(calculate_manhattan_distance(wire_starting_position, wire_interect_point) for wire_interect_point in wire_interect_points)
 	print(min(manhattan_distances))
+
+	# Part 2
+	# Answer: 27890
+	# Set an initial metric to check against. We have to add one to get the true value because we're dealing with indices here.
+	fewest_combined_steps = (wire_01_path_positions.index(list(wire_interect_points[0])) + 1) + (wire_02_path_positions.index(list(wire_interect_points[0])) + 1)
+	# Go through each intersection and calculate the steps required to reach each one. This works because we've tracked the entire path each wire took and stored it in a list. 
+	# Therefore to find the number of steps we just need to find the index of the intersection value in the list and add one to it, giving us the number of steps required to get to the intersection.
+	for wire_interect_point in wire_interect_points:
+		fewest_combined_steps_temp = (wire_01_path_positions.index(list(wire_interect_point)) + 1) + (wire_02_path_positions.index(list(wire_interect_point)) + 1)
+		if fewest_combined_steps_temp < fewest_combined_steps:
+			fewest_combined_steps = fewest_combined_steps_temp
+	print(fewest_combined_steps)
