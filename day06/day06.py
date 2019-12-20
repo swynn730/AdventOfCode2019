@@ -1,5 +1,4 @@
 import copy
-import itertools
 # Part 1
 # Answer: 245089
 # Needed some help with part 1, because even though the original algorithm I came up with worked on the test data it didn't work with the real data.
